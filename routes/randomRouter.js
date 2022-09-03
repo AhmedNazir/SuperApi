@@ -1,5 +1,6 @@
 // External Modules
 const express = require("express");
+const path = require("path");
 
 // Internal Modules
 const words = require("../utils/word1000");
@@ -207,6 +208,32 @@ router.get("/string", (req, res) => {
     }
 });
 
+router.get("/word", (req, res) => {
+    const url = path.posix.join(req.originalUrl, "1");
+    res.redirect(url);
+
+    //     try {
+    //         let count = 1;
+
+    //         let result = [];
+    //         for (let i = 0; i < count; i++) {
+    //             let randomNumber = Math.floor(Math.random() * 1000);
+    //             result.push(words[randomNumber]);
+    //         }
+
+    //         res.status(200).json({
+    //             error: false,
+    //             parameter: { count, total: words.length },
+    //             result,
+    //         });
+    //     } catch (error) {
+    //         res.status(500).json({
+    //             error: true,
+    //             message: error.message,
+    //         });
+    //     }
+});
+
 router.get("/word/:count", (req, res) => {
     try {
         if (Number.isInteger(Number(req.params.count)) === false)
@@ -239,37 +266,10 @@ router.get("/word/:count", (req, res) => {
     }
 });
 
-router.get("/word", (req, res) => {
-    let url = req.originalUrl;
-    if (url[url.length - 1] != "/") url = url + "/";
-    res.redirect(url + "1");
-    
-    //     try {
-    //         let count = 1;
-
-    //         let result = [];
-    //         for (let i = 0; i < count; i++) {
-    //             let randomNumber = Math.floor(Math.random() * 1000);
-    //             result.push(words[randomNumber]);
-    //         }
-
-    //         res.status(200).json({
-    //             error: false,
-    //             parameter: { count, total: words.length },
-    //             result,
-    //         });
-    //     } catch (error) {
-    //         res.status(500).json({
-    //             error: true,
-    //             message: error.message,
-    //         });
-    //     }
-});
-
 router.get("/toss", (req, res) => {
-    let url = req.originalUrl;
-    if (url[url.length - 1] != "/") url = url + "/";
-    res.redirect(url + "1");
+    const url = path.posix.join(req.originalUrl, "1");
+    res.redirect(url);
+
     // try {
     //     let randomNumber = Math.floor(Math.random() * 100);
     //     const result = randomNumber % 2 ? "head" : "tail";
