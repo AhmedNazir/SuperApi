@@ -2,7 +2,7 @@
 const express = require("express");
 
 // Internal Modules
-
+const words = require("../utils/word1000");
 // Router
 const router = express.Router();
 
@@ -200,6 +200,134 @@ router.get("/string", (req, res) => {
         });
     } catch (error) {
         res.status(500).json({
+            error: true,
+            message: error.message,
+        });
+    }
+});
+
+router.get("/dictionary/:count", (req, res) => {
+    try {
+        if (Number.isInteger(Number(req.params.count)) === false)
+            throw new Error(
+                "positive Integer value is expected. Mimimum limit 1 and maximum limit 1000.",
+            );
+
+        let count = req.params.count || 1;
+        count = Number(count);
+
+        if (count < 1) count = 1;
+        if (count > 1000) count = 1000;
+
+        let result = [];
+        for (let i = 0; i < count; i++) {
+            let randomNumber = Math.floor(Math.random() * 1000);
+            result.push(words[randomNumber]);
+        }
+
+        res.status(200).json({
+            error: false,
+            parameter: { count, total: words.length },
+            result,
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: true,
+            message: error.message,
+        });
+    }
+});
+
+router.get("/dictionary", (req, res) => {
+    res.redirect(req.originalUrl + "/1");
+    //     try {
+    //         let count = 1;
+
+    //         let result = [];
+    //         for (let i = 0; i < count; i++) {
+    //             let randomNumber = Math.floor(Math.random() * 1000);
+    //             result.push(words[randomNumber]);
+    //         }
+
+    //         res.status(200).json({
+    //             error: false,
+    //             parameter: { count, total: words.length },
+    //             result,
+    //         });
+    //     } catch (error) {
+    //         res.status(500).json({
+    //             error: true,
+    //             message: error.message,
+    //         });
+    //     }
+});
+
+router.get("/toss", (req, res) => {
+    res.redirect(req.originalUrl + "/1");
+    // try {
+    //     let randomNumber = Math.floor(Math.random() * 100);
+    //     const result = randomNumber % 2 ? "head" : "tail";
+
+    //     res.status(200).json({
+    //         error: false,
+    //         result: result,
+    //     });
+    // } catch (error) {
+    //     res.status(200).json({
+    //         error: true,
+    //         message: error.message,
+    //     });
+    // }
+});
+
+router.get("/toss/:count", (req, res) => {
+    try {
+        if (Number.isInteger(Number(req.params.count)) === false)
+            throw new Error(
+                "positive Integer value is expected. Mimimum limit 1 and maximum limit 1000.",
+            );
+
+        let count = req.params.count || 1;
+        count = Number(count);
+
+        if (count < 1) count = 1;
+        if (count > 1000) count = 1000;
+
+        let result = [];
+
+        for (let i = 0; i < count; i++) {
+            let randomNumber = Math.floor(Math.random() * 100);
+            const r = randomNumber % 2 ? "head" : "tail";
+            result.push(r);
+        }
+
+        res.status(200).json({
+            error: false,
+            parameter: { count },
+            result,
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: true,
+            message: error.message,
+        });
+    }
+});
+
+router.get("/dice", (req, res) => {
+    try {
+        let randomNumber;
+        do {
+            randomNumber = Math.floor(Math.random() * 100) % 7;
+        } while (randomNumber == 0);
+
+        res.status(200).json({
+            error: false,
+            parameter: { min: 1, max: 6 },
+            result: randomNumber,
+        });
+    } catch (error) {
+        res.status(200).json({
             error: true,
             message: error.message,
         });
