@@ -240,7 +240,10 @@ router.get("/dictionary/:count", (req, res) => {
 });
 
 router.get("/dictionary", (req, res) => {
-    res.redirect(req.originalUrl + "/1");
+    let url = req.originalUrl;
+    if (url[url.length - 1] != "/") url = url + "/";
+    res.redirect(url + "1");
+    
     //     try {
     //         let count = 1;
 
@@ -264,7 +267,9 @@ router.get("/dictionary", (req, res) => {
 });
 
 router.get("/toss", (req, res) => {
-    res.redirect(req.originalUrl + "/1");
+    let url = req.originalUrl;
+    if (url[url.length - 1] != "/") url = url + "/";
+    res.redirect(url + "1");
     // try {
     //     let randomNumber = Math.floor(Math.random() * 100);
     //     const result = randomNumber % 2 ? "head" : "tail";
