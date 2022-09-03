@@ -4,25 +4,9 @@ const path = require("path");
 
 // Internal Modules
 const words = require("../utils/word1000");
-
+const { stringGenerator } = require("../utils/common");
 // Router
 const router = express.Router();
-
-function stringGenerator(length, loweralpha, upperalpha, digits, special) {
-    var result = "";
-
-    var characters = "";
-    if (digits) characters += "0123456789";
-    if (upperalpha) characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    if (loweralpha) characters += "abcdefghijklmnopqrstuvwxyz";
-    if (special) characters += "!@#$%^&";
-
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-}
 
 router.get("/", (req, res) => {
     res.status(200).json({
