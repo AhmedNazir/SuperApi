@@ -11,14 +11,14 @@ const weatherRouter = require("./routes/weatherRouter");
 const shortenerRouter = require("./routes/shortenerRouter");
 const newsRouter = require("./routes/newsRouter");
 
-// App Module
-const app = express();
-
 // Database Connection
 mongoose
     .connect(process.env.DATABASE_CONNECTION_PATH)
     .then(() => console.log("Database connection is ok"))
     .catch((err) => console.log(err.message));
+
+// App Module
+const app = express();
 
 // App Setting
 app.use(express.json());
