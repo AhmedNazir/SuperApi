@@ -207,7 +207,7 @@ router.get("/string", (req, res) => {
     }
 });
 
-router.get("/dictionary/:count", (req, res) => {
+router.get("/word/:count", (req, res) => {
     try {
         if (Number.isInteger(Number(req.params.count)) === false)
             throw new Error(
@@ -239,7 +239,7 @@ router.get("/dictionary/:count", (req, res) => {
     }
 });
 
-router.get("/dictionary", (req, res) => {
+router.get("/word", (req, res) => {
     let url = req.originalUrl;
     if (url[url.length - 1] != "/") url = url + "/";
     res.redirect(url + "1");
