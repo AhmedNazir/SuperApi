@@ -35,7 +35,7 @@ app.use("/shortener", shortenerRouter);
 app.use("/weather", weatherRouter);
 app.use("/news", newsRouter);
 app.use("/note", noteRouter);
-app.use("/umessage", uMessageRouter);
+app.use("/message", uMessageRouter);
 
 // Server Listen
 app.listen(process.env.PORT || 3000, (err) => {
