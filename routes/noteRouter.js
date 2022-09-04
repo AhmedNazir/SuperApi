@@ -38,6 +38,45 @@ router.get("/all", loginProtected, async (req, res) => {
     }
 });
 
+// add note by get >> done
+router.get("/add", checkLogin, async (req, res) => {
+    try {
+        if (!req.params.text) throw new Error("Text is missing");
+        const text = req.params.text;
+
+        const title = req.params.title || "Untitle";
+        const author = res.locals.username || "guest";
+
+        let alias;
+        do {
+            alias = stringGenerator(process.env.ALIAS_LENGTH);
+            arr = await NoteModel.find({ alias });
+        } while (arr.length > 0);
+
+        const note = new NoteModel({
+            title,
+            text,
+            alias,
+            author,
+        });
+
+        await note.save();
+
+        const share = path.posix.join(req.originalUrl, alias);
+
+        res.status(200).json({
+            error: false,
+            share,
+            result: note,
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: true,
+            message: error.message,
+        });
+    }
+});
+
 // get url by alias >> done
 router.get("/:alias", async (req, res) => {
     try {
@@ -97,6 +136,8 @@ router.post("/", checkLogin, async (req, res) => {
         });
     }
 });
+
+
 
 // update url >> done only id
 router.put("/", checkLogin, async (req, res) => {
