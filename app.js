@@ -12,6 +12,7 @@ const shortenerRouter = require("./routes/shortenerRouter");
 const newsRouter = require("./routes/newsRouter");
 const userRouter = require("./routes/userRouter");
 const noteRouter = require("./routes/noteRouter");
+const uMessageRouter = require("./routes/uMessageRouter.js");
 
 // Database Connection
 mongoose
@@ -34,6 +35,7 @@ app.use("/shortener", shortenerRouter);
 app.use("/weather", weatherRouter);
 app.use("/news", newsRouter);
 app.use("/note", noteRouter);
+app.use("/umessage", uMessageRouter);
 
 // Server Listen
 app.listen(process.env.PORT || 3000, (err) => {
