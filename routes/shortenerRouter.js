@@ -2,10 +2,12 @@
 const express = require("express");
 const crypto = require("crypto");
 require("dotenv").config();
+
 // Internal Modules
 const UrlModel = require("../models/UrlModel");
+const loginProtected = require("../middlewares/loginProtected");
 const { stringGenerator } = require("../utils/common");
-const { mongo, default: mongoose } = require("mongoose");
+
 // Router
 const router = express.Router();
 
@@ -18,10 +20,9 @@ router.get("/", (req, res) => {
 });
 
 // get all url
-router.get("/all", async (req, res) => {
+router.get("/all", loginProtected, async (req, res) => {
     try {
         const author = res.locals.username;
-
         const result = await UrlModel.find({ author }).limit(100);
 
         res.status(200).json({
@@ -213,7 +214,15 @@ router.delete("/:id", async (req, res) => {
 
         const data1 = await UrlModel.findById({ _id: req.params.id });
         if (data1 == null) throw new Error("invalid id");
-        else await UrlModel.findByIdAndDelete({ _id: req.params.id });
+        else
+            UrlModel.findByIdAndDelete({ _id: req.params.id }, (err) => {
+                if (err) throw new Error("deletion failed");
+
+                res.status(200).json({
+                    error: false,
+                    message: "deleted successfully",
+                });
+            });
 
         // let data1, data2;
         // if (!author === "guest") {
@@ -235,11 +244,6 @@ router.delete("/:id", async (req, res) => {
         //         if (data1 == null) throw new Error("invalid alias or id");
         //     }
         // }
-
-        res.status(200).json({
-            error: false,
-            message: "deleted successfully",
-        });
     } catch (error) {
         res.status(500).json({
             error: true,

@@ -10,6 +10,8 @@ const randomRouter = require("./routes/randomRouter");
 const weatherRouter = require("./routes/weatherRouter");
 const shortenerRouter = require("./routes/shortenerRouter");
 const newsRouter = require("./routes/newsRouter");
+const userRouter = require("./routes/userRouter");
+const noteRouter = require("./routes/noteRouter");
 
 // Database Connection
 mongoose
@@ -26,14 +28,15 @@ app.use(cors());
 
 // Route Setting
 app.use("/", indexRouter);
+app.use("/user", userRouter);
 app.use("/random", randomRouter);
 app.use("/shortener", shortenerRouter);
 app.use("/weather", weatherRouter);
 app.use("/news", newsRouter);
+app.use("/note", noteRouter);
 
 // Server Listen
 app.listen(process.env.PORT || 3000, (err) => {
     if (err) console.log("Server setup is failed");
-    else
-        console.log(`App is listening at http://localhost:${process.env.PORT}`);
+    else console.log(`App is listening at http://localhost:${process.env.PORT}`);
 });

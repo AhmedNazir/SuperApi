@@ -7,9 +7,7 @@ const UrlSchema = mongoose.Schema(
         alias: { type: String, required: true, unique: true },
         author: { type: String, require: true, default: "guest" },
     },
-    {
-        timestampe: true,
-    },
+    { timestamps: true },
 );
 
 const UrlModel = mongoose.model("url", UrlSchema);
