@@ -175,10 +175,7 @@ router.post("/:alias", async (req, res) => {
             message,
         });
 
-        console.log(newMessage);
-        
         const flag = await newMessage.save();
-
 
         if (!flag) throw new Error("Message saving failed");
 
