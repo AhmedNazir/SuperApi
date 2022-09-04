@@ -41,10 +41,10 @@ router.get("/all", loginProtected, async (req, res) => {
 // add note by get >> done
 router.get("/add", checkLogin, async (req, res) => {
     try {
-        if (!req.params.text) throw new Error("Text is missing");
-        const text = req.params.text;
+        if (!req.query.text) throw new Error("Text is missing");
+        const text = req.query.text;
 
-        const title = req.params.title || "Untitle";
+        const title = req.query.title || "Untitle";
         const author = res.locals.username || "guest";
 
         let alias;
