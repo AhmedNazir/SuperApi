@@ -88,10 +88,10 @@ router.post("/", upload.fields([{ name: "files", maxCount: 10 }]), async (req, r
         });
 
         res.redirect("/file/" + alias);
-        // res.json({
-        //     error: false,
-        //     share: "/file/" + alias,
-        // });
+        console.log({
+            error: false,
+            share: "/file/" + alias,
+        });
 
         next();
     } catch (error) {
