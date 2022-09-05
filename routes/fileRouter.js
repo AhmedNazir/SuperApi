@@ -53,7 +53,7 @@ const upload = multer({
     storage: multerS3({
         acl: "public-read",
         s3,
-        bucket: "cyclic-lazy-gray-hen-fez-ap-northeast-2",
+        bucket: process.env.AWS_BUCKET,
         metadata: function (req, file, cb) {
             cb(null, { fieldName: "TESTING_METADATA" });
         },
