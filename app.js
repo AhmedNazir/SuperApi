@@ -46,10 +46,10 @@ app.use("/note", noteRouter);
 app.use("/message", messageRouter);
 app.use("/file", fileRouter);
 
-// // 404 error
-// app.use((req, res, next) => {
-//     next(new Error("Not Found"));
-// });
+// 404 error
+app.use((req, res, next) => {
+    next(new Error("Not Found"));
+});
 
 // General Error
 app.use((error, req, res, next) => {
