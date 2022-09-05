@@ -1,20 +1,10 @@
 const express = require("express");
 const multer = require("multer");
-const multerS3 = require("multer-s3");
 const fs = require("fs");
 const doenv = require("dotenv").config();
 const path = require("path");
 const mongoose = require("mongoose");
 const { v4: uuidv4, validate: uuidValidate } = require("uuid");
-const aws = require("aws-sdk");
-
-aws.config.update({
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    region: process.env.AWS_REGION,
-});
-const s3 = new aws.S3();
-
 // internal
 const File = require("../models/FileModel");
 
@@ -48,27 +38,32 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({
-    // fileFilter,
-    storage: multerS3({
-        acl: "public-read",
-        s3,
-        bucket: process.env.AWS_BUCKET,
-        metadata: function (req, file, cb) {
-            cb(null, { fieldName: "TESTING_METADATA" });
-        },
-        key: function (req, file, cb) {
-            let fileBaseName = path
-                .basename(file.originalname, path.extname(file.originalname))
-                .replace(" ", "-")
-                .replace(/[^a-z0-9-]/gi, "")
-                .toLowerCase();
-            let fileExtName = path.extname(file.originalname);
-
-            const uniqueName = fileBaseName + "-" + Date.now() + fileExtName;
-            cb(null, uniqueName);
-        },
-    }),
+let upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1000000, // 1MB
+    },
+    // fileFilter: (req, file, callback) => {
+    // if (file.fieldname === "files") {
+    //     if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    //         callback(null, true);
+    //     } else {
+    //         callback(new Error("Only jpg, png file is allowed."));
+    //     }
+    // } else if (file.fieldname === "resume") {
+    //     if (
+    //         file.mimetype === "application/pdf" ||
+    //         file.mimetype === "application/msword" ||
+    //         file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    //     ) {
+    //         callback(null, true);
+    //     } else {
+    //         callback(new Error("Only pdf, doc, docx file is allowed."));
+    //     }
+    // } else {
+    //     cb(new Error("There was an unknown error!"));
+    // }
+    // },
 });
 
 router.get("/", (req, res, next) => {
@@ -83,6 +78,7 @@ router.get("/", (req, res, next) => {
 router.post("/", upload.fields([{ name: "files", maxCount: 10 }]), async (req, res, next) => {
     try {
         if (!req.files) next("File(s) is missing");
+
         const alias = uuidv4();
 
         req.files.files.forEach(async (element) => {
