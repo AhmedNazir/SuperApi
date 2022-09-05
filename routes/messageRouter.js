@@ -4,10 +4,8 @@ const path = require("path");
 require("dotenv").config();
 
 // Internal Modules
-const UMessageModel = require("../models/UMessageModel");
+const MessageModel = require("../models/MessageModel");
 const UUserModel = require("../models/UUserModel");
-// const loginProtected = require("../middlewares/loginProtected");
-// const checkLogin = require("../middlewares/checkLogin");
 const { stringGenerator } = require("../utils/common");
 
 // Router
@@ -111,7 +109,7 @@ router.post("/inbox", async (req, res) => {
         let data = await UUserModel.findOne({ alias, passcode });
         if (!data) throw new Error("invalid alias or passcode");
 
-        const result = await UMessageModel.find({ alias });
+        const result = await MessageModel.find({ alias });
 
         res.status(200).json({
             error: false,
@@ -138,7 +136,7 @@ router.get("/:alias", async (req, res) => {
         const user = await UUserModel.findOne({ alias });
         if (!user) throw new Error("invalid alias");
 
-        const newMessage = new UMessageModel({
+        const newMessage = new MessageModel({
             alias,
             message,
         });
@@ -170,7 +168,7 @@ router.post("/:alias", async (req, res) => {
         const user = await UUserModel.findOne({ alias });
         if (!user) throw new Error("invalid alias");
 
-        const newMessage = new UMessageModel({
+        const newMessage = new MessageModel({
             alias,
             message,
         });
@@ -206,7 +204,7 @@ router.delete("/", async (req, res) => {
         UUserModel.findOneAndDelete({ alias, passcode }, (err) => {
             if (err) throw new Error("deletion failed");
 
-            UMessageModel.deleteMany({ alias }, (err) => {
+            MessageModel.deleteMany({ alias }, (err) => {
                 if (err) throw new Error("deletion failed");
 
                 res.status(200).json({

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const uMessageSchema = mongoose.Schema(
+const messageSchema = mongoose.Schema(
     {
         message: { type: String, required: true },
         alias: { type: String, required: true },
@@ -8,5 +8,5 @@ const uMessageSchema = mongoose.Schema(
     { timestamps: true },
 );
 
-const UMessageModel = mongoose.model("umessage", uMessageSchema);
-module.exports = UMessageModel;
+const MessageModel = mongoose.model("umessage", messageSchema);
+module.exports = MessageModel;

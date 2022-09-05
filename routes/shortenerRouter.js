@@ -12,7 +12,7 @@ const { stringGenerator } = require("../utils/common");
 const router = express.Router();
 
 // forum view
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
     res.status(200).json({
         error: false,
         message: "shortener api is working",
@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 });
 
 // get all url
-router.get("/all", loginProtected, async (req, res) => {
+router.get("/all", loginProtected, async (req, res, next) => {
     try {
         const author = res.locals.username;
         const result = await UrlModel.find({ author }).limit(100);
@@ -30,15 +30,12 @@ router.get("/all", loginProtected, async (req, res) => {
             result,
         });
     } catch (error) {
-        res.status(500).json({
-            error: true,
-            message: error.message,
-        });
+        next(error);
     }
 });
 
 // add url by get
-router.get("/add", async (req, res) => {
+router.get("/add", async (req, res, next) => {
     try {
         if (!req.query.link) throw new Error("Long link is missing");
         const link = req.query.link;
@@ -82,15 +79,12 @@ router.get("/add", async (req, res) => {
             result: newUrl,
         });
     } catch (error) {
-        res.status(500).json({
-            error: true,
-            message: error.message,
-        });
+        next(error);
     }
 });
 
 // get url by id
-router.get("/:alias", async (req, res) => {
+router.get("/:alias", async (req, res, next) => {
     try {
         if (!req.params.alias) throw new Error("alias is required for deletion");
         const alias = req.params.alias;
@@ -103,15 +97,12 @@ router.get("/:alias", async (req, res) => {
             result: { link: result.link, alias: result.alias, author: result.author },
         });
     } catch (error) {
-        res.status(500).json({
-            error: true,
-            message: error.message,
-        });
+        next(error);
     }
 });
 
 // add url
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
     try {
         if (!req.body.link) throw new Error("Long link is missing");
         const link = req.body.link;
@@ -155,15 +146,12 @@ router.post("/", async (req, res) => {
             result: newUrl,
         });
     } catch (error) {
-        res.status(500).json({
-            error: true,
-            message: error.message,
-        });
+        next(error);
     }
 });
 
 // update url
-router.put("/", async (req, res) => {
+router.put("/", async (req, res, next) => {
     try {
         if (!req.body.link) throw new Error("Long link is missing");
         const link = req.body.link;
@@ -198,15 +186,12 @@ router.put("/", async (req, res) => {
             result,
         });
     } catch (error) {
-        res.status(500).json({
-            error: true,
-            message: error.message,
-        });
+        next(error);
     }
 });
 
 // delete url
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
     try {
         const author = res.locals.username || "guest";
 
@@ -245,10 +230,7 @@ router.delete("/:id", async (req, res) => {
         //     }
         // }
     } catch (error) {
-        res.status(500).json({
-            error: true,
-            message: error.message,
-        });
+        next(error);
     }
 });
 
