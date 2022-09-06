@@ -45,6 +45,7 @@ app.use("/news", newsRouter);
 app.use("/note", noteRouter);
 app.use("/message", messageRouter);
 app.use("/file", fileRouter);
+// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // 404 error
 app.use((req, res, next) => {
@@ -56,7 +57,6 @@ app.use((error, req, res, next) => {
     if (error) {
         const message = error.message || "Some error occurs.";
         console.log("error message: " + message);
-        console.log(error);
         res.status(500).json({
             error: true,
             message,

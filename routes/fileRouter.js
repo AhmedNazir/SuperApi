@@ -75,9 +75,11 @@ router.get("/", (req, res, next) => {
     }
 });
 
-router.post("/", upload.fields([{ name: "files", maxCount: 10 }]), async (req, res, next) => {
+router.post("/", upload.fields([{ name: "files", maxCount: 10 }]), async (req, res) => {
     try {
-        if (!req.files) next("File(s) is missing");
+        if (!req.files) throw new Error("File(s) is missing");
+
+        console.log(req.files);
 
         const alias = uuidv4();
 
@@ -93,9 +95,12 @@ router.post("/", upload.fields([{ name: "files", maxCount: 10 }]), async (req, r
             share: "/file/" + alias,
         });
 
-        next();
+        // next();
     } catch (error) {
-        next(error);
+        res.json({
+            error: true,
+            message: error.message,
+        });
     }
 });
 
