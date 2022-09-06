@@ -89,7 +89,7 @@ router.post("/", upload.fields([{ name: "files", maxCount: 10 }]), async (req, r
         const alias = uuidv4();
 
         // let arr = [];
-        const p1 = req.files.files.forEach(async (element) => {
+        req.files.files.forEach(async (element) => {
             const uploadfolder = "files/" + element.filename;
             const result = await cloudinary.uploader.upload(element.path, { public_id: uploadfolder });
             element.path = result.url;
