@@ -5,14 +5,22 @@ const doenv = require("dotenv").config();
 const path = require("path");
 const mongoose = require("mongoose");
 const { v4: uuidv4, validate: uuidValidate } = require("uuid");
+const cloudinary = require("cloudinary").v2;
+
 // internal
 const File = require("../models/FileModel");
 
 const router = express.Router();
 
+cloudinary.config({
+    cloud_name: "databin",
+    api_key: "693894822256763",
+    api_secret: "F1e4x2rBorR1aUjCYhCCURg2iFU",
+});
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const folderName = process.env.FILE_UPLOAD_PATH;
+        const folderName = "tmp";
 
         try {
             if (!fs.existsSync(folderName)) {
@@ -78,24 +86,32 @@ router.get("/", (req, res, next) => {
 router.post("/", upload.fields([{ name: "files", maxCount: 10 }]), async (req, res) => {
     try {
         if (!req.files) throw new Error("File(s) is missing");
-
-        console.log(req.files);
-
         const alias = uuidv4();
 
-        req.files.files.forEach(async (element) => {
+        // let arr = [];
+        const p1 = req.files.files.forEach(async (element) => {
+            const uploadfolder = "files/" + element.filename;
+            const result = await cloudinary.uploader.upload(element.path, { public_id: uploadfolder });
+            element.path = result.url;
+
+            // element.path = "/uploads/" + element.filename;
+            // console.log("tmp/" + element.filename);
+
             element.alias = alias;
             let file = new File(element);
             await file.save();
+            const p = path.join(process.env.FILE_UPLOAD_PATH, element.filename);
+            fs.unlinkSync(p);
         });
+
+        // Promise.all[(arr, p1)];
+        // res.json({
+        //     error: false,
+        //     share: "/file/" + alias,
+        // });
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
 
         res.redirect("/file/" + alias);
-        console.log({
-            error: false,
-            share: "/file/" + alias,
-        });
-
-        // next();
     } catch (error) {
         res.json({
             error: true,

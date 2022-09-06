@@ -11,13 +11,16 @@
 <body>
 
     <ul>
-        <% data.forEach(element=> {
+        <%
+        
+        
+        data.forEach(element=> {
             const filename = element.filename;
             const filepath = element.path; %>
 
             <li><span>
                     <%= element.originalname %>
-                </span> <a href=<%="http://localhost:3000/uploads/" + filename %>>download
+                </span> <a href=<%=filepath %>>download
                 </a></li>
             <% }); %>
     </ul>

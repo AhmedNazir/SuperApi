@@ -45,12 +45,11 @@ app.use("/news", newsRouter);
 app.use("/note", noteRouter);
 app.use("/message", messageRouter);
 app.use("/file", fileRouter);
-// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // 404 error
-app.use((req, res, next) => {
-    next(new Error("Not Found"));
-});
+// app.use((req, res, next) => {
+//     next("Not Found");
+// });
 
 // General Error
 app.use((error, req, res, next) => {
