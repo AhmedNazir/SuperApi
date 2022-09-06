@@ -20,7 +20,7 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const folderName = "tmp";
+        const folderName = process.env.FILE_UPLOAD_PATH;
 
         try {
             if (!fs.existsSync(folderName)) {
