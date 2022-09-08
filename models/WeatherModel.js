@@ -4,8 +4,8 @@ const WeatherSchema = mongoose.Schema(
     {
         cityid: { type: Number, required: true },
         temp: { type: Number, required: true },
-        temp_min: { type: String, required: true },
-        temp_max: { type: String, required: true },
+        temp_min: { type: Number, required: true },
+        temp_max: { type: Number, required: true },
         temp_feel: { type: Number, required: true },
         wind: { type: Number },
         pressure: { type: Number },
