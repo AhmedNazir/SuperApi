@@ -11,6 +11,9 @@ const { stringGenerator } = require("../utils/common");
 // Router
 const router = express.Router();
 
+/**
+ * This is homepage of annonymous message service
+ */
 // forum view
 router.get("/", (req, res) => {
     res.status(200).json({
@@ -19,6 +22,10 @@ router.get("/", (req, res) => {
     });
 });
 
+/**
+ * This is post method of create new message account
+ * 
+ */
 // create new alias >> done
 router.post("/create", async (req, res) => {
     try {

@@ -16,6 +16,9 @@ const noteRouter = require("./routes/noteRouter");
 const messageRouter = require("./routes/messageRouter");
 const fileRouter = require("./routes/fileRouter");
 
+/**
+ * Mongoose Connection with database
+ */
 // Database Connection
 mongoose
     .connect(process.env.DATABASE_CONNECTION_PATH)
@@ -52,17 +55,20 @@ app.use("/file", fileRouter);
 // });
 
 // General Error
-app.use((error, req, res, next) => {
-    if (error) {
-        const message = error.message || "Some error occurs.";
-        console.log("error message: " + message);
-        res.status(500).json({
-            error: true,
-            message,
-        });
-    }
-});
+// app.use((error, req, res, next) => {
+//     if (error) {
+//         const message = error.message || "Some error occurs.";
+//         console.log("error message: " + message);
+//         res.status(500).json({
+//             error: true,
+//             message,
+//         });
+//     }
+// });
 
+/**
+ * This is listening Function
+ */
 // Server Listen
 app.listen(process.env.PORT || 3000, (err) => {
     if (err) console.log("Server setup is failed");
