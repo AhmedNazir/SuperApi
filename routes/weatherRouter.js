@@ -204,8 +204,6 @@ router.get("/:city", async (req, res) => {
         });
 
         if (!hourly) {
-            await WeatherModel.deleteMany({ cityid: city.id });
-
             const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lattitude}&lon=${longitude}&units=metric&appid=5aa137464eb3b9c0558f1b5469f045cf`;
             let result = await axios.get(url);
 
@@ -213,21 +211,28 @@ router.get("/:city", async (req, res) => {
             result = result.data;
             console.log(url);
 
-            const newUpdate = new WeatherModel({
-                temp: result.main.temp,
-                temp_min: result.main.temp_min,
-                temp_max: result.main.temp_max,
-                temp_feel: result.main.feels_like,
-                pressure: result.main.pressure,
-                humidity: result.main.humidity,
-                sea_level: result.main.sea_level,
-                visibility: result.main.visibility,
-                wind: result.wind.speed,
-                description: result.weather[0].description,
-                cityid: city.id,
-            });
+            const newUpdate = await WeatherModel.findOneAndUpdate(
+                {
+                    cityid: city.id,
+                },
+                {
+                    $set: {
+                        temp: result.main.temp,
+                        temp_min: result.main.temp_min,
+                        temp_max: result.main.temp_max,
+                        temp_feel: result.main.feels_like,
+                        pressure: result.main.pressure,
+                        humidity: result.main.humidity,
+                        sea_level: result.main.sea_level,
+                        visibility: result.main.visibility,
+                        wind: result.wind.speed,
+                        description: result.weather[0].description,
+                        cityid: city.id,
+                    },
+                },
+                { upsert: true, new: true },
+            );
 
-            await newUpdate.save();
             hourly = newUpdate;
         }
 
@@ -262,8 +267,6 @@ router.get("/id/:id", async (req, res) => {
         });
 
         if (!hourly) {
-            await WeatherModel.deleteMany({ cityid: city.id });
-
             const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lattitude}&lon=${longitude}&units=metric&appid=5aa137464eb3b9c0558f1b5469f045cf`;
             let result = await axios.get(url);
 
@@ -271,21 +274,28 @@ router.get("/id/:id", async (req, res) => {
             result = result.data;
             console.log(url);
 
-            const newUpdate = new WeatherModel({
-                temp: result.main.temp,
-                temp_min: result.main.temp_min,
-                temp_max: result.main.temp_max,
-                temp_feel: result.main.feels_like,
-                pressure: result.main.pressure,
-                humidity: result.main.humidity,
-                sea_level: result.main.sea_level,
-                visibility: result.main.visibility,
-                wind: result.wind.speed,
-                description: result.weather[0].description,
-                cityid: city.id,
-            });
+            const newUpdate = await WeatherModel.findOneAndUpdate(
+                {
+                    cityid: city.id,
+                },
+                {
+                    $set: {
+                        temp: result.main.temp,
+                        temp_min: result.main.temp_min,
+                        temp_max: result.main.temp_max,
+                        temp_feel: result.main.feels_like,
+                        pressure: result.main.pressure,
+                        humidity: result.main.humidity,
+                        sea_level: result.main.sea_level,
+                        visibility: result.main.visibility,
+                        wind: result.wind.speed,
+                        description: result.weather[0].description,
+                        cityid: city.id,
+                    },
+                },
+                { upsert: true, new: true },
+            );
 
-            await newUpdate.save();
             hourly = newUpdate;
         }
 
