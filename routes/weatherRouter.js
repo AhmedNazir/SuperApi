@@ -244,6 +244,64 @@ router.get("/:city", async (req, res) => {
     }
 });
 
+//get city by id >> done
+router.get("/id/:id", async (req, res) => {
+    try {
+        if (!req.params.id) throw new Error("CityID is needed");
+        let cityid = req.params.id;
+
+        city = await CityModel.findOne({ id: cityid });
+        if (!city) throw new Error("This City is not available");
+
+        const lattitude = city.lattitude;
+        const longitude = city.longitude;
+
+        let hourly = await WeatherModel.findOne({
+            cityid: city.id,
+            updatedAt: { $gte: new Date(Date.now() - 1000 * 60 * 60) },
+        });
+
+        if (!hourly) {
+            await WeatherModel.deleteMany({ cityid: city.id });
+
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lattitude}&lon=${longitude}&units=metric&appid=5aa137464eb3b9c0558f1b5469f045cf`;
+            let result = await axios.get(url);
+
+            if (!result.data) throw new Error("Weather data collection is failed");
+            result = result.data;
+            console.log(url);
+
+            const newUpdate = new WeatherModel({
+                temp: result.main.temp,
+                temp_min: result.main.temp_min,
+                temp_max: result.main.temp_max,
+                temp_feel: result.main.feels_like,
+                pressure: result.main.pressure,
+                humidity: result.main.humidity,
+                sea_level: result.main.sea_level,
+                visibility: result.main.visibility,
+                wind: result.wind.speed,
+                description: result.weather[0].description,
+                cityid: city.id,
+            });
+
+            await newUpdate.save();
+            hourly = newUpdate;
+        }
+
+        res.status(200).json({
+            error: false,
+            city: city,
+            weather: hourly,
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: true,
+            message: error.message,
+        });
+    }
+});
+
 //get historical data of city >> done
 router.get("/forecast/:city", async (req, res) => {
     try {
