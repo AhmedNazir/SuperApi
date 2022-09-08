@@ -143,7 +143,7 @@ router.get("/location", async (req, res) => {
             },
         );
 
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lattitude}&lon=${longitude}&appid=5aa137464eb3b9c0558f1b5469f045cf`;
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lattitude}&lon=${longitude}&units=metric&appid=5aa137464eb3b9c0558f1b5469f045cf`;
 
         let result = await axios.get(url);
         if (!result.data) throw new Error("Weather data collection is failed");
@@ -206,7 +206,7 @@ router.get("/:city", async (req, res) => {
         if (!hourly) {
             await WeatherModel.deleteMany({ cityid: city.id });
 
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lattitude}&lon=${longitude}&appid=5aa137464eb3b9c0558f1b5469f045cf`;
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lattitude}&lon=${longitude}&units=metric&appid=5aa137464eb3b9c0558f1b5469f045cf`;
             let result = await axios.get(url);
 
             if (!result.data) throw new Error("Weather data collection is failed");
