@@ -15,6 +15,7 @@ const userRouter = require("./routes/userRouter");
 const noteRouter = require("./routes/noteRouter");
 const messageRouter = require("./routes/messageRouter");
 const fileRouter = require("./routes/fileRouter");
+const authRouter = require("./routes/authRouter");
 
 /**
  * Mongoose Connection with database
@@ -44,10 +45,11 @@ app.use("/user", userRouter);
 app.use("/random", randomRouter);
 app.use("/shortener", shortenerRouter);
 app.use("/weather", weatherRouter);
-app.use("/news", newsRouter);
+// app.use("/news", newsRouter);
 app.use("/note", noteRouter);
 app.use("/message", messageRouter);
 app.use("/file", fileRouter);
+app.use("/auth", authRouter);
 
 // 404 error
 // app.use((req, res, next) => {
