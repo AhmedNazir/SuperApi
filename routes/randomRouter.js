@@ -173,7 +173,27 @@ router.get("/string", (req, res) => {
         res.status(200).json({
             error: false,
             parameter: { count, length, loweralpha, upperalpha, digits, special },
-            result,
+            result: uuid.v4(),
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: true,
+            message: error.message,
+        });
+    }
+});
+
+router.get("/string/unique", (req, res) => {
+    try {
+        res.status(200).json({
+            error: false,
+            result: {
+                timestamp: uuid.v1(),
+                // v2: uuid.v2(),
+                // v3: uuid.v3(100),
+                string: uuid.v4(),
+                // v5: uuid.v5(),
+            },
         });
     } catch (error) {
         res.status(500).json({
