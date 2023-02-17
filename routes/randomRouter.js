@@ -1,6 +1,7 @@
 // External Modules
 const express = require("express");
 const path = require("path");
+const uuid = require("uuid");
 
 // Internal Modules
 const words = require("../utils/word1000");
@@ -18,9 +19,7 @@ router.get("/", (req, res) => {
 router.get("/integer/:count", (req, res) => {
     try {
         if (Number.isInteger(Number(req.params.count)) === false)
-            throw new Error(
-                "positive Integer value is expected. Mimimum limit 1 and maximum limit 1000.",
-            );
+            throw new Error("positive Integer value is expected. Mimimum limit 1 and maximum limit 1000.");
 
         let min = 0,
             max = 1000,
@@ -74,9 +73,7 @@ router.get("/integer", (req, res) => {
 
         let base = Number(req.query.base) || 10;
         if (base != 8 && base != 10 && base != 16)
-            throw new Error(
-                "Integer value 8, 10, 16 is expected for base parameter. Default base is 10.",
-            );
+            throw new Error("Integer value 8, 10, 16 is expected for base parameter. Default base is 10.");
 
         let count = Number(req.query.count) || 100;
         if (count > 1000) count = 1000;
@@ -90,10 +87,8 @@ router.get("/integer", (req, res) => {
         if (max > Number.MAX_SAFE_INTEGER) max = Number.MAX_SAFE_INTEGER;
         if (max < Number.MIN_SAFE_INTEGER) max = Number.MIN_SAFE_INTEGER;
 
-        if (req.query.min && req.query.max == null)
-            max = min + count * 10 > min + 100 ? min + count * 10 : min + 100;
-        if (req.query.min == null && req.query.max)
-            min = max - count * 10 < max - 100 ? max - count * 10 : max - 100;
+        if (req.query.min && req.query.max == null) max = min + count * 10 > min + 100 ? min + count * 10 : min + 100;
+        if (req.query.min == null && req.query.max) min = max - count * 10 < max - 100 ? max - count * 10 : max - 100;
 
         if (min >= max) throw new Error("min value should be less than max value.");
 
@@ -149,18 +144,14 @@ router.get("/string", (req, res) => {
         if (digits > 1 || digits < 0) digits = 1;
 
         if (req.query.upperalpha && Number.isInteger(Number(req.query.upperalpha)) === false)
-            throw new Error(
-                "an integer is expected for upperalpha. Default upperalpha is 1 for on.",
-            );
+            throw new Error("an integer is expected for upperalpha. Default upperalpha is 1 for on.");
 
         let upperalpha = req.query.upperalpha || 1;
         upperalpha = Number(upperalpha);
         if (upperalpha > 1 || upperalpha < 0) upperalpha = 1;
 
         if (req.query.loweralpha && Number.isInteger(Number(req.query.loweralpha)) === false)
-            throw new Error(
-                "an integer is expected for loweralpha. Default loweralpha is 1 for on.",
-            );
+            throw new Error("an integer is expected for loweralpha. Default loweralpha is 1 for on.");
 
         let loweralpha = req.query.loweralpha || 1;
         loweralpha = Number(loweralpha);
@@ -221,9 +212,7 @@ router.get("/word", (req, res) => {
 router.get("/word/:count", (req, res) => {
     try {
         if (Number.isInteger(Number(req.params.count)) === false)
-            throw new Error(
-                "positive Integer value is expected. Mimimum limit 1 and maximum limit 1000.",
-            );
+            throw new Error("positive Integer value is expected. Mimimum limit 1 and maximum limit 1000.");
 
         let count = req.params.count || 1;
         count = Number(count);
@@ -273,9 +262,7 @@ router.get("/toss", (req, res) => {
 router.get("/toss/:count", (req, res) => {
     try {
         if (Number.isInteger(Number(req.params.count)) === false)
-            throw new Error(
-                "positive Integer value is expected. Mimimum limit 1 and maximum limit 1000.",
-            );
+            throw new Error("positive Integer value is expected. Mimimum limit 1 and maximum limit 1000.");
 
         let count = req.params.count || 1;
         count = Number(count);
@@ -323,5 +310,7 @@ router.get("/dice", (req, res) => {
         });
     }
 });
+
+router.get("/string/unique", (req, res) => {});
 
 module.exports = router;
