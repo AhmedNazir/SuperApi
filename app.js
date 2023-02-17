@@ -25,7 +25,7 @@ mongoose
     .connect(process.env.DATABASE_CONNECTION_PATH)
     .then(() => console.log("Database connection is ok"))
     .catch((err) => console.log(err.message));
-
+    
 // App Module
 const app = express();
 
