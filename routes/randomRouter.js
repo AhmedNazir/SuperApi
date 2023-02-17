@@ -331,6 +331,4 @@ router.get("/dice", (req, res) => {
     }
 });
 
-router.get("/string/unique", (req, res) => {});
-
 module.exports = router;
