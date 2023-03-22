@@ -86,7 +86,7 @@ router.get("/add", async (req, res, next) => {
 // get url by id
 router.get("/:alias", async (req, res, next) => {
     try {
-        if (!req.params.alias) throw new Error("alias is required for deletion");
+        if (!req.params.alias) throw new Error("alias is required for info");
         const alias = req.params.alias;
 
         const result = await UrlModel.findOne({ alias });

@@ -1,10 +1,10 @@
 // External Modules
-const { query } = require("express");
+// const { query } = require("express");
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4, validate: uuidValidate } = require("uuid");
 const axios = require("axios").default;
-require("dotenv").config();
+// require("dotenv").config();
 
 // Internal Modules
 const CityModel = require("../models/CityModel");

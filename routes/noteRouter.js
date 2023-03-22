@@ -137,8 +137,6 @@ router.post("/", checkLogin, async (req, res) => {
     }
 });
 
-
-
 // update url >> done only id
 router.put("/", checkLogin, async (req, res) => {
     try {
@@ -154,11 +152,7 @@ router.put("/", checkLogin, async (req, res) => {
         const data = await NoteModel.findOne({ _id: id });
         if (!data) throw new Error("id is invalid");
 
-        const result = await NoteModel.findOneAndUpdate(
-            { _id: id },
-            { $set: query },
-            { new: true },
-        );
+        const result = await NoteModel.findOneAndUpdate({ _id: id }, { $set: query }, { new: true });
 
         if (!result) throw new Error("Update fails");
 

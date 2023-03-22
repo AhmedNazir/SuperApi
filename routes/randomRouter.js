@@ -188,10 +188,11 @@ router.get("/string/unique", (req, res) => {
         res.status(200).json({
             error: false,
             result: {
-                timestamp: uuid.v1(),
+                string: stringGenerator(),
+                uuidv1: uuid.v1(),
                 // v2: uuid.v2(),
                 // v3: uuid.v3(100),
-                string: uuid.v4(),
+                uuidv4: [uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4(), uuid.v4()],
                 // v5: uuid.v5(),
             },
         });
