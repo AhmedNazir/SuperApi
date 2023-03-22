@@ -188,7 +188,13 @@ router.get("/string/unique", (req, res) => {
         res.status(200).json({
             error: false,
             result: {
-                string: stringGenerator(),
+                string: [
+                    stringGenerator((length = 10)),
+                    stringGenerator((length = 10)),
+                    stringGenerator((length = 10)),
+                    stringGenerator((length = 10)),
+                    stringGenerator((length = 10)),
+                ],
                 uuidv1: uuid.v1(),
                 // v2: uuid.v2(),
                 // v3: uuid.v3(100),
