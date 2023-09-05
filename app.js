@@ -16,6 +16,7 @@ const noteRouter = require("./routes/noteRouter");
 const messageRouter = require("./routes/messageRouter");
 const fileRouter = require("./routes/fileRouter");
 const authRouter = require("./routes/authRouter");
+const infoRouter = require("./routes/infoRouter");
 
 /**
  * Mongoose Connection with database
@@ -32,6 +33,7 @@ const app = express();
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.set('trust proxy', true);
 
 // App Setting
 app.use(express.json());
