@@ -1,6 +1,7 @@
 // External Modules
 const express = require("express");
 const geoip = require('geoip-lite');
+const axios = require("axios").default;
 
 // Router
 const router = express.Router();
