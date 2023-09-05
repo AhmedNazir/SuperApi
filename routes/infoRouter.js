@@ -6,11 +6,11 @@ const geoip = require('geoip-lite');
 const router = express.Router();
 
 
-app.get('/', function(req, res){
+router.get('/', function(req, res){
 
     try {
         const geo = geoip.lookup(req.ip);
-        
+
         res.status(200).json({
             error: false,
             data: {
