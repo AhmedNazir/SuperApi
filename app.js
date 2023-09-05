@@ -52,6 +52,7 @@ app.use("/note", noteRouter);
 app.use("/message", messageRouter);
 app.use("/file", fileRouter);
 app.use("/auth", authRouter);
+app.use("/info", infoRouter);
 
 // 404 error
 // app.use((req, res, next) => {
