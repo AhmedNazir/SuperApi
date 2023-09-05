@@ -1,28 +1,34 @@
 // External Modules
 const express = require("express");
-var geoip = require('geoip-lite');
+const geoip = require('geoip-lite');
 
 // Router
 const router = express.Router();
 
 
-app.get('/test', function(req, res){
+app.get('/', function(req, res){
 
-    console.log('Headers: ' + JSON.stringify(req.headers));
-    console.log('IP: ' + JSON.stringify(req.ip));
+    try {
+        const geo = geoip.lookup(req.ip);
+        
+        res.status(200).json({
+            error: false,
+            data: {
+                Headers: JSON.stringify(req.headers),
+                IP: JSON.stringify(req.ip),
+                Browser: req.headers["user-agent"],
+                Language: req.headers["accept-language"],
+                Country: (geo ? geo.country: "Unknown"),
+                Region: (geo ? geo.region: "Unknown"),
+            },
+        });
 
-    var geo = geoip.lookup(req.ip);
+    } catch (error) {
+        res.status(500).json({
+            error: true,
+        });
+    }
 
-    console.log("Browser: " + req.headers["user-agent"]);
-    console.log("Language: " + req.headers["accept-language"]);
-    console.log("Country: " + (geo ? geo.country: "Unknown"));
-    console.log("Region: " + (geo ? geo.region: "Unknown"));
-
-    console.log(geo);
-
-    res.status(200);
-    res.header("Content-Type",'application/json');
-    res.end(JSON.stringify({status: "OK"}));
 });
 
 module.exports = router;
